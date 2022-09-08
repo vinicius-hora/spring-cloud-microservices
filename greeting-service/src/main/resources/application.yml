@@ -1,0 +1,15 @@
+
+server.port: 4100
+spring:
+  application:
+    name: greeting-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - '*'
+
+greeting-service:
+  greeting: "olá"
+  default-value: "mundo"
