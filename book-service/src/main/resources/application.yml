@@ -1,0 +1,8 @@
+
+server:
+  port: 4104
+spring:
+  application:
+    name: book-service
+  profiles:
+    active: dev

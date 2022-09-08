@@ -1,7 +1,7 @@
-
-server.port: 4100
+server:
+  port: 4103
 spring:
   application:
-    name: greeting-service
+    name: cambio-service
   profiles:
     active: dev
