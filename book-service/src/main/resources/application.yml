@@ -6,3 +6,24 @@ spring:
     name: book-service
   profiles:
     active: dev
+#Resilienc4j
+resilience4j:
+  #retelimiter
+  ratelimiter:
+    instances:
+      default:
+        limitForPeriod: 2
+        limitRefreshPeriod: 10s
+  #bulkhead
+  bulkhead:
+    instances:
+      default:
+        maxConcurrentCalls: 10
+  retry:
+    instances:
+      default:
+        maxAttempts: 5
+      foo-bar:
+        maxAttempts: 5
+        waitDuration: 2s
+        enableExponentialBackoff: true
