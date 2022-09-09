@@ -31,3 +31,9 @@ spring:
       schemas: book_service
       user: ${DB_USER:postgres}
       password: ${DB_PASSWORD:postgres}
+
+#eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
