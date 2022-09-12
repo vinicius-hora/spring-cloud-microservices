@@ -5,6 +5,7 @@ import br.com.cambioservice.repository.CambioRepostiroy;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import java.math.RoundingMode;
 @RequestMapping("cambio-service")
 @RequiredArgsConstructor
 @Tag(name = "Cambio Service")
+@Slf4j
 public class CambioController {
 
     private final Environment environment;
@@ -28,6 +30,7 @@ public class CambioController {
     @GetMapping(value = "/{amount}/{from}/{to}")
     public Cambio getCambio(@PathVariable("amount")BigDecimal amount, @PathVariable("from") String from,@PathVariable("to") String to){
 
+        log.info("get?Cambio is called with: -> {}, {} and {}", amount, from, to);
 
         var cambio = cambioRepostiroy.findByFromAndTo(from, to);
 

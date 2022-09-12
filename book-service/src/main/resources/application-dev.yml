@@ -43,3 +43,8 @@ springdoc:
   show-actuator: true
   api-docs:
     path: book-service/v3/api-docs
+
+  #logs
+  sleuth:
+    sampler:
+      probability: 1.0
