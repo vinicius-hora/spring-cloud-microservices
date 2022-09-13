@@ -55,6 +55,7 @@ services:
         POSTGRES_PASSWORD: postgres
         POSTGRES_DB: cambio_service
         TZ: America/Sao_Paulo
+        POSTGRES_PORT: 5432
       # ports:
       #   - "35434:5432"
       restart: always
@@ -101,11 +102,12 @@ services:
         POSTGRES_PASSWORD: postgres
         POSTGRES_DB: book_service
         TZ: America/Sao_Paulo
+      #   POSTGRES_PORT: 5433
       # ports:
-      #   - "35433:5433"
+      #   - 35433:5433
       restart: always
       networks:
-        - erudio-network
+        - db-book-network
   book-service:
     image: viniciushora/book-service
     restart: always
@@ -134,11 +136,14 @@ services:
       SPRING_ZIPKIN_SENDER_TYPE: rabbit
     networks:
       - erudio-network
+      - db-book-network
       # - docker_local
  
     
 networks:
   erudio-network:
+    driver: bridge
+  db-book-network:
     driver: bridge
   # docker_local:
   #   external: true
