@@ -27,8 +27,7 @@ spring:
 
     #flyway
     flyway:
-      url: ${DB_URL_FLYWAY:jdbc:postgresql://localhost:35432/}
-      schemas: book_service
+      url: ${DB_URL_FLYWAY:jdbc:postgresql://localhost:35432/book_service}
       user: ${DB_USER:postgres}
       password: ${DB_PASSWORD:postgres}
 

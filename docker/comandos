@@ -1,0 +1,5 @@
+zipkin:
+docker run -p 9411:9411 openzipkin/zipkin:2.23.2
+
+naming-server:
+docker run -p:8761:8761 viniciushora/naming-server:0.0.1-SNAPSHOT
