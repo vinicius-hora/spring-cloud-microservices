@@ -1,8 +1,10 @@
 version: '3.4'
 
 services:
+
   zipkin-server:
     image: openzipkin/zipkin:2.23.2
+    restart: always
     ports:
       - 9411:9411
     depends_on:
@@ -42,7 +44,23 @@ services:
       SPRING_ZIPKIN_SENDER_TYPE: rabbit
     networks:
       - erudio-network 
-  
+
+  #db_cambio
+  db_cambio:
+      image: postgres:alpine3.16 
+      volumes:
+        - ./data/postgres:/var/lib/postgresql/data
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: cambio_service
+        TZ: America/Sao_Paulo
+      # ports:
+      #   - "35434:5432"
+      restart: always
+      networks:
+        - erudio-network
+ 
   cambio-service:
     image: viniciushora/cambio-service
     restart: always
@@ -54,24 +72,40 @@ services:
     depends_on:
       - naming-server
       - rabbit-mq
+      - db_cambio
     environment:
       SPRING.APPLICATION.NAME: cambio-service
       TZ: America/Sao_Paulo
       ZIPKIN.BASE-URL: http://zipkin-server:9411/
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
       #banco de dados em oura rede - outro docoker compose
-      DB_URL: jdbc:postgresql://database:5432/cambio_service
+      DB_URL: jdbc:postgresql://db_cambio:5432/cambio_service
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_URL_FLYWAY: jdbc:postgresql://database:5432/cambio_service
+      DB_URL_FLYWAY: jdbc:postgresql://db_cambio:5432/cambio_service
       #rabbit-mq
       RABBIT_URI: amqp://guest:guest@rabbit-mq:5672
       SPRING_RABBITMQ_HOST: rabbit-mq
       SPRING_ZIPKIN_SENDER_TYPE: rabbit
     networks:
       - erudio-network
-      - docker_local
-    
+      # - docker_local
+  
+  #db_cambio
+  db_book:
+      image: postgres:alpine3.16 
+      volumes:
+        - ./data/postgres:/var/lib/postgresql/data
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: book_service
+        TZ: America/Sao_Paulo
+      # ports:
+      #   - "35433:5433"
+      restart: always
+      networks:
+        - erudio-network
   book-service:
     image: viniciushora/book-service
     restart: always
@@ -83,28 +117,29 @@ services:
     depends_on:
       - naming-server
       - rabbit-mq
+      - db_book
     environment:
       SPRING.APPLICATION.NAME: book-service
       TZ: America/Sao_Paulo
       ZIPKIN.BASE-URL: http://zipkin-server:9411/
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
       #banco de dados em oura rede - outro docoker compose
-      DB_URL: jdbc:postgresql://database:5432/book_service
+      DB_URL: jdbc:postgresql://db_book:5432/book_service
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_URL_FLYWAY: jdbc:postgresql://database:5432/book_service
+      DB_URL_FLYWAY: jdbc:postgresql://db_book:5432/book_service
       #rabbit-mq
       RABBIT_URI: amqp://guest:guest@rabbit-mq:5672
       SPRING_RABBITMQ_HOST: rabbit-mq
       SPRING_ZIPKIN_SENDER_TYPE: rabbit
     networks:
       - erudio-network
-      - docker_local
+      # - docker_local
  
     
 networks:
   erudio-network:
     driver: bridge
-  docker_local:
-    external: true
+  # docker_local:
+  #   external: true
     
