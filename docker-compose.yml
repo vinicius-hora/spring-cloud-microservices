@@ -23,14 +23,14 @@ services:
       - erudio-network
 
   naming-server:
-    image: viniciushora/naming-server:0.0.1-SNAPSHOT
+    image: viniciushora/naming-server:latest
     ports:
       - 8761:8761
     networks:
       - erudio-network
   
   api-gateway:
-    image: viniciushora/api-gateway:0.0.1-SNAPSHOT
+    image: viniciushora/api-gateway:latest
     ports:
       - 8765:8765
     depends_on:
@@ -63,11 +63,8 @@ services:
         - erudio-network
  
   cambio-service:
-    image: viniciushora/cambio-service
+    image: viniciushora/cambio-service:latest
     restart: always
-    build:
-      context: .
-      dockerfile: cambio-service/Dockerfile
     ports:
       - 4103:4103
     depends_on:
@@ -109,11 +106,8 @@ services:
       networks:
         - db-book-network
   book-service:
-    image: viniciushora/book-service
+    image: viniciushora/book-service:latest
     restart: always
-    build:
-      context: .
-      dockerfile: book-service/Dockerfile
     ports:
       - 4104:4104
     depends_on:
