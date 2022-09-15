@@ -63,8 +63,11 @@ services:
         - erudio-network
  
   cambio-service:
-    image: viniciushora/cambio-service:latest
+    image: viniciushora/cambio-service
     restart: always
+    build:
+      context: .
+      dockerfile: cambio-service/Dockerfile
     ports:
       - 4103:4103
     depends_on:
@@ -106,8 +109,11 @@ services:
       networks:
         - db-book-network
   book-service:
-    image: viniciushora/book-service:latest
+    image: viniciushora/book-service
     restart: always
+    build:
+      context: .
+      dockerfile: book-service/Dockerfile
     ports:
       - 4104:4104
     depends_on:
